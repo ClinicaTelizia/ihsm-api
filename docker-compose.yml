@@ -1,0 +1,48 @@
+version: '3'
+services:
+  cta-clinica-terautica-api:
+    container_name: cta-clinica-terautica-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3005:3005
+      - 9229:9229
+    command: npm run start:dev
+    depends_on:
+      - postgres
+    links:
+      - postgres:postgres
+    image: api
+    restart: unless-stopped
+    env_file:
+      - .env.local
+    volumes:
+      - ./src:/api/src
+      - ./migrations:/api/migrations
+    networks:
+      - cta-clinica-terautica-api-network
+
+  postgres:
+    container_name: postgres
+    image: postgres:alpine
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    env_file:
+      - .env.local
+    networks:
+      - cta-clinica-terautica-api-network
+
+  adminer:
+    container_name: cta-clinica-terautica-api-adminer
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    networks:
+      - cta-clinica-terautica-api-network
+
+networks:
+  cta-clinica-terautica-api-network:
+    external: true
