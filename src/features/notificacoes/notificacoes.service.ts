@@ -12,15 +12,15 @@ export class NotificacoesService {
     return `This action returns all notificacoes`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} notificacoe`;
   }
 
-  update(id: number, updateNotificacoeDto: UpdateNotificacoeDto) {
+  update(id: string, updateNotificacoeDto: UpdateNotificacoeDto) {
     return `This action updates a #${id} notificacoe`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} notificacoe`;
   }
 }

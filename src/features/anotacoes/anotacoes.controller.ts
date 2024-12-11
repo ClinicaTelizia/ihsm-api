@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { AnotacoesService } from './anotacoes.service';
 import { CreateAnotacoeDto } from './dto/create-anotacoe.dto';
 import { UpdateAnotacoeDto } from './dto/update-anotacoe.dto';
@@ -19,16 +27,19 @@ export class AnotacoesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.anotacoesService.findOne(+id);
+    return this.anotacoesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAnotacoeDto: UpdateAnotacoeDto) {
-    return this.anotacoesService.update(+id, updateAnotacoeDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateAnotacoeDto: UpdateAnotacoeDto,
+  ) {
+    return this.anotacoesService.update(id, updateAnotacoeDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.anotacoesService.remove(+id);
+    return this.anotacoesService.remove(id);
   }
 }

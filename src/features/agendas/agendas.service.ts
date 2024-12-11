@@ -12,15 +12,15 @@ export class AgendasService {
     return `This action returns all agendas`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} agenda`;
   }
 
-  update(id: number, updateAgendaDto: UpdateAgendaDto) {
+  update(id: string, updateAgendaDto: UpdateAgendaDto) {
     return `This action updates a #${id} agenda`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} agenda`;
   }
 }

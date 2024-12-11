@@ -1,21 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('anotacao') 
-
+@Entity('anotacao')
 export class Anotacoe {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @Column({ type: 'varchar' })
+  tituloNota: string;
 
-    @Column({type: 'varchar'})
-    tituloNota: string;
+  @Column({ type: 'varchar' })
+  anotacao: string;
 
-    @Column({type: 'varchar'})
-    anotacao: string;
+  @Column({ type: 'varchar' })
+  terapeutaId: string;
 
-    @Column({type: 'varchar'})
-    terapeutaId: string;
-
-    @Column({type: 'varchar'})
-    pacienteId: string;
+  @Column({ type: 'varchar' })
+  pacienteId: string;
 }

@@ -12,15 +12,15 @@ export class PagamentosService {
     return `This action returns all pagamentos`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} pagamento`;
   }
 
-  update(id: number, updatePagamentoDto: UpdatePagamentoDto) {
+  update(id: string, updatePagamentoDto: UpdatePagamentoDto) {
     return `This action updates a #${id} pagamento`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} pagamento`;
   }
 }

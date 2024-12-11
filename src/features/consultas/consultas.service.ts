@@ -1,26 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateConsultaDto } from './dto/create-consulta.dto';
 import { UpdateConsultaDto } from './dto/update-consulta.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Consulta } from './entities/consulta.entity';
 
 @Injectable()
 export class ConsultasService {
-  create(createConsultaDto: CreateConsultaDto) {
-    return 'This action adds a new consulta';
+  constructor(
+    @InjectRepository(Consulta)
+    private readonly consultaRepository: Repository<Consulta>,
+  ) {}
+
+  async create(createConsultaDto: CreateConsultaDto) {
+    const consulta = this.consultaRepository.create(createConsultaDto);
+    return await this.consultaRepository.save(consulta);
   }
 
-  findAll() {
-    return `This action returns all consultas`;
+  async findAll() {
+    return await this.consultaRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} consulta`;
+  async findOne(id: string) {
+    const consulta = await this.consultaRepository.findOne({
+      where: { id: id as any },
+    });
+    if (!consulta) {
+      throw new NotFoundException(`Consulta com id ${id} não encontrada`);
+    }
+    return consulta;
   }
 
-  update(id: number, updateConsultaDto: UpdateConsultaDto) {
-    return `This action updates a #${id} consulta`;
+  async update(id: string, updateConsultaDto: UpdateConsultaDto) {
+    const consulta = await this.findOne(id);
+    Object.assign(consulta, updateConsultaDto);
+    return await this.consultaRepository.save(consulta);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} consulta`;
+  async remove(id: string) {
+    const consulta = await this.findOne(id);
+    return await this.consultaRepository.remove(consulta);
   }
 }

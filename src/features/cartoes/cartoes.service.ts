@@ -12,15 +12,15 @@ export class CartoesService {
     return `This action returns all cartoes`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} cartoe`;
   }
 
-  update(id: number, updateCartoeDto: UpdateCartoeDto) {
+  update(id: string, updateCartoeDto: UpdateCartoeDto) {
     return `This action updates a #${id} cartoe`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} cartoe`;
   }
 }

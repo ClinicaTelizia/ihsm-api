@@ -1,28 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTerapeutaDto } from './dto/create-terapeuta.dto';
 import { UpdateTerapeutaDto } from './dto/update-terapeuta.dto';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Terapeuta } from './entities/terapeuta.entity';
 
 @Injectable()
 export class TerapeutasService {
-  create(createTerapeutaDto: CreateTerapeutaDto) {
-    return 'This action adds a new terapeuta';
+  constructor(
+    @InjectRepository(Terapeuta)
+    private readonly terapeutaRepository: Repository<Terapeuta>,
+  ) {}
+
+  async create(createTerapeutaDto: CreateTerapeutaDto) {
+    const terapeuta = this.terapeutaRepository.create(createTerapeutaDto);
+    return await this.terapeutaRepository.save(terapeuta);
   }
 
   async findAll() {
     const terapeutas = await this.terapeutaRepository.find();
-    return terapeutas; // Retorna um array de terapeutas
-  }
-  
-
-  findOne(id: number) {
-    return `This action returns a #${id} terapeuta`;
+    return terapeutas;
   }
 
-  update(id: number, updateTerapeutaDto: UpdateTerapeutaDto) {
-    return `This action updates a #${id} terapeuta`;
+  async findOne(id: string) {
+    const terapeuta = await this.terapeutaRepository.findOneBy({
+      id: id as any,
+    });
+    if (!terapeuta) {
+      throw new NotFoundException(`Terapeuta com id ${id} não encontrado`);
+    }
+    return terapeuta;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} terapeuta`;
+  async update(id: string, updateTerapeutaDto: UpdateTerapeutaDto) {
+    const terapeuta = await this.findOne(id);
+    Object.assign(terapeuta, updateTerapeutaDto);
+    return await this.terapeutaRepository.save(terapeuta);
+  }
+
+  async remove(id: string) {
+    const terapeuta = await this.findOne(id);
+    return await this.terapeutaRepository.remove(terapeuta);
   }
 }
