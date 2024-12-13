@@ -6,7 +6,8 @@
 # Node artifact files
 node_modules/
 dist/
-
+ecosystem.config.js
+.env
 # Compiled Java class files
 *.class
 
