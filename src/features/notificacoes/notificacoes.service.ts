@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateNotificacoeDto } from './dto/create-notificacoe.dto';
 import { UpdateNotificacoeDto } from './dto/update-notificacoe.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Notificacoes } from './entities/notificacoes.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class NotificacoesService {
-  create(createNotificacoeDto: CreateNotificacoeDto) {
-    return 'This action adds a new notificacoe';
+  constructor(
+    @InjectRepository(Notificacoes)
+    private notificacaoRepository: Repository<Notificacoes>,
+  ) {}
+
+  async create(createNotificacoeDto: CreateNotificacoeDto) {
+    const notificacao = this.notificacaoRepository.create(createNotificacoeDto);
+    return await this.notificacaoRepository.save(notificacao);
   }
 
-  findAll() {
-    return `This action returns all notificacoes`;
+  async findAll() {
+    const notificacoes = await this.notificacaoRepository.find();
+    return notificacoes;
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} notificacoe`;
+  async findOne(id: string) {
+    const notificacao = await this.notificacaoRepository.findOne({
+      where: { id },
+    });
+    if (!notificacao) {
+      throw new NotFoundException(`Notificação com ID ${id} não encontrada`);
+    }
+    return notificacao;
   }
 
-  update(id: string, updateNotificacoeDto: UpdateNotificacoeDto) {
-    return `This action updates a #${id} notificacoe`;
+  async update(id: string, updateNotificacoeDto: UpdateNotificacoeDto) {
+    const notificacao = await this.notificacaoRepository.findOne({
+      where: { id },
+    });
+    if (!notificacao) {
+      throw new NotFoundException(`Notificação com ID ${id} não encontrada`);
+    }
+    Object.assign(notificacao, updateNotificacoeDto);
+    return await this.notificacaoRepository.save(notificacao);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} notificacoe`;
+  async remove(id: string) {
+    const notificacao = await this.notificacaoRepository.findOne({
+      where: { id },
+    });
+    if (!notificacao) {
+      throw new NotFoundException(`Notificação com ID ${id} não encontrada`);
+    }
+    return await this.notificacaoRepository.remove(notificacao);
   }
 }

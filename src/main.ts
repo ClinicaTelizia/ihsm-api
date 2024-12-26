@@ -5,7 +5,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
 import { ProfilingIntegration } from '@sentry/profiling-node';
 import { useContainer } from 'class-validator';
-
 import { AppModule } from './app.module';
 import { SentryFilter } from './configuracoes/filters/sentry.filter';
 import { UnauthorizedForbiddenExceptionFilter } from './configuracoes/filters/unauthorized-forbidden.filter';

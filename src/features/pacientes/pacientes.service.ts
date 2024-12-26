@@ -45,7 +45,6 @@ export class PacientesService {
   }
 
   async remove(id: string) {
-    // Corrigindo tipo de ID para compatibilidade com o TypeORM
     const paciente = await this.pacienteRepository.findOne({
       where: { id: id as any },
     });

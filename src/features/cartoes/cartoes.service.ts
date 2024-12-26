@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCartoeDto } from './dto/create-cartoe.dto';
 import { UpdateCartoeDto } from './dto/update-cartoe.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Cartoe } from './entities/cartoe.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CartoesService {
-  create(createCartoeDto: CreateCartoeDto) {
-    return 'This action adds a new cartoe';
+  constructor(
+    @InjectRepository(Cartoe)
+    private cartaoRepository: Repository<Cartoe>,
+  ) {}
+
+  async create(createCartoeDto: CreateCartoeDto) {
+    const cartao = this.cartaoRepository.create(createCartoeDto);
+    return await this.cartaoRepository.save(cartao);
   }
 
-  findAll() {
-    return `This action returns all cartoes`;
+  async findAll() {
+    const cartoes = await this.cartaoRepository.find();
+    return cartoes;
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} cartoe`;
+  async findOne(id: string) {
+    const cartao = await this.cartaoRepository.findOne({
+      where: { id },
+    });
+    if (!cartao) {
+      throw new NotFoundException(`Cartão com ID ${id} não encontrado`);
+    }
+    return cartao;
   }
 
-  update(id: string, updateCartoeDto: UpdateCartoeDto) {
-    return `This action updates a #${id} cartoe`;
+  async update(id: string, updateCartoeDto: UpdateCartoeDto) {
+    const cartao = await this.cartaoRepository.findOne({
+      where: { id },
+    });
+    if (!cartao) {
+      throw new NotFoundException(`Cartão com ID ${id} não encontrado`);
+    }
+    Object.assign(cartao, updateCartoeDto);
+    return await this.cartaoRepository.save(cartao);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} cartoe`;
+  async remove(id: string) {
+    const cartao = await this.cartaoRepository.findOne({
+      where: { id },
+    });
+    if (!cartao) {
+      throw new NotFoundException(`Cartão com ID ${id} não encontrado`);
+    }
+    return await this.cartaoRepository.remove(cartao);
   }
 }
