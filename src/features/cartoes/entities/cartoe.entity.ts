@@ -8,24 +8,24 @@ export class Cartoe {
   @Column({ type: 'varchar' })
   pacienteId: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   terapeutaId: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   consultaId: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   agendaId: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   pagamentoId: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   cartoesId: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true})
   ratingsId: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   reportsId: string;
 }
